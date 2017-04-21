@@ -6,6 +6,8 @@ Requires Python 3+. No Third-Party libraries.
 
 # How to use
 ```python
+from SlackHandler import SlackHandler
+
 # as you like
 channel = "#python-log"
 webhookUrl = "https://hooks.slack.com/services/YOUR_INCOMING_WEB_HOOK_URL_HERE"
