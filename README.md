@@ -6,6 +6,7 @@ Requires Python 3+. No Third-Party libraries.
 
 # How to use
 ```python
+import logging
 from SlackHandler import SlackHandler
 
 # as you like
