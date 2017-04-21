@@ -31,3 +31,5 @@ logger.addHandler(handler)
 
 logger.error("Hahaha")
 ```
+
+<img src="https://raw.githubusercontent.com/SlashNephy/SlackHandler/master/slack.png">
