@@ -1,10 +1,13 @@
-import logging
+# coding=utf-8
 import json
 import urllib.request
+from logging import Handler
+from threading import Thread
 
-class SlackHandler(logging.Handler):
+
+class SlackHandler(Handler):
     def __init__(self, channel, webhook_url, username=None, icon_emoji=None, icon_url=None):
-        logging.Handler.__init__(self)
+        Handler.__init__(self)
 
         self.url = webhook_url
         self.payload = {
@@ -20,11 +23,13 @@ class SlackHandler(logging.Handler):
             self.payload["icon_emoji"] = ":desktop_computer:"
 
     def emit(self, record):
-        try:
-            payload = self.payload
-            payload["text"] = self.format(record)
-            req = urllib.request.Request(self.url, data=json.dumps(payload).encode(), method="POST")
-            urllib.request.urlopen(req)
+        def send(req):
+            try:
+                urllib.request.urlopen(req)
+            except Exception:
+                self.handleError(record)
 
-        except Exception:
-            self.handleError(record)
+        payload = self.payload.copy()
+        payload["text"] = self.format(record)
+        req = urllib.request.Request(self.url, data=json.dumps(payload).encode(), method="POST")
+        Thread(target=send, args=(req,)).start()
